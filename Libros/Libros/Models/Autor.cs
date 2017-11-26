@@ -21,6 +21,8 @@ namespace Libros.Models
     
         public int IdAutor { get; set; }
         public string Nombre { get; set; }
+
+        public bool Selected { get; set; }
     
         public virtual ICollection<AutorLibro> AutorLibro { get; set; }
     }

@@ -49,7 +49,7 @@ namespace Libros.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Titulo,FechaEdicion")] Libro libro, int[] ids)
+        public ActionResult Create([Bind(Include = "Titulo,FechaEdicion")] Libro libro, int[] idsAutores)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace Libros.Controllers
                 db.SaveChanges();
                 int idLibro = libro.IdLibro;
 
-                foreach (var autorId in ids)
+                foreach (var autorId in idsAutores)
                 {
                     Autor autor = new Autor();
                     autor = db.Autor.FirstOrDefault(a => a.IdAutor == autorId);
@@ -93,6 +93,17 @@ namespace Libros.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<Autor> autores = new List<Autor>();
+            autores = db.Autor.ToList();
+            foreach (Autor autor in autores)
+            {
+                bool selected = db.AutorLibro.Any(a => a.IdAutor == autor.IdAutor && a.IdLibro == id);
+                autor.Selected = selected;
+            }
+            ViewBag.AllAutores = autores;
+
+
             return View(libro);
         }
 
@@ -101,12 +112,32 @@ namespace Libros.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="IdLibro,Titulo,FechaEdicion")] Libro libro)
+        public ActionResult Edit([Bind(Include = "IdLibro,Titulo,FechaEdicion")] Libro libro, int[] idsAutores)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(libro).State = EntityState.Modified;
                 db.SaveChanges();
+
+                List<AutorLibro> actualList = new List<AutorLibro>();
+                actualList = db.AutorLibro.Where(a => a.IdLibro == libro.IdLibro).Select(al => al).ToList();
+
+                foreach (AutorLibro actualLibro in actualList)
+                {
+                    db.AutorLibro.Remove(actualLibro);
+                }
+
+                foreach (var autorId in idsAutores)
+                {
+                    Autor autor = new Autor();
+                    autor = db.Autor.FirstOrDefault(a => a.IdAutor == autorId);
+                    AutorLibro autorLibro = new AutorLibro();
+                    autorLibro.Autor = autor;
+                    autorLibro.Libro = libro;
+                    db.AutorLibro.Add(autorLibro);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
             }
             return View(libro);
