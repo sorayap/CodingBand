@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibrosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Autor">
+    <Key>
+      <PropertyRef Name="IdAutor" />
+    </Key>
+    <Property Name="IdAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AutorLibro">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdAutor" Type="int" Nullable="false" />
+    <Property Name="IdLibro" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Libro">
+    <Key>
+      <PropertyRef Name="IdLibro" />
+    </Key>
+    <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Titulo" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="FechaEdicion" Type="date" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__AutoLib__Autor__7F2BE32F">
+    <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+    <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autor">
+        <PropertyRef Name="IdAutor" />
+      </Principal>
+      <Dependent Role="AutorLibro">
+        <PropertyRef Name="IdAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__AutoLib__Libro__7F2BE32F">
+    <End Role="Libro" Type="Self.Libro" Multiplicity="1" />
+    <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Libro">
+        <PropertyRef Name="IdLibro" />
+      </Principal>
+      <Dependent Role="AutorLibro">
+        <PropertyRef Name="IdLibro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibrosModelStoreContainer">
+    <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AutorLibro" EntityType="Self.AutorLibro" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Libro" EntityType="Self.Libro" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__AutoLib__Autor__7F2BE32F" Association="Self.FK__AutoLib__Autor__7F2BE32F">
+      <End Role="Autor" EntitySet="Autor" />
+      <End Role="AutorLibro" EntitySet="AutorLibro" />
+    </AssociationSet>
+    <AssociationSet Name="FK__AutoLib__Libro__7F2BE32F" Association="Self.FK__AutoLib__Libro__7F2BE32F">
+      <End Role="Libro" EntitySet="Libro" />
+      <End Role="AutorLibro" EntitySet="AutorLibro" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

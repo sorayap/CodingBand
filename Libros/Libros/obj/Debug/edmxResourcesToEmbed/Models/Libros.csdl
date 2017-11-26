@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibrosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Autor">
+    <Key>
+      <PropertyRef Name="IdAutor" />
+    </Key>
+    <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="AutorLibro" Relationship="Self.FK__AutoLib__Autor__7F2BE32F" FromRole="Autor" ToRole="AutorLibro" />
+  </EntityType>
+  <EntityType Name="AutorLibro">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdAutor" Type="Int32" Nullable="false" />
+    <Property Name="IdLibro" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Autor" Relationship="Self.FK__AutoLib__Autor__7F2BE32F" FromRole="AutorLibro" ToRole="Autor" />
+    <NavigationProperty Name="Libro" Relationship="Self.FK__AutoLib__Libro__7F2BE32F" FromRole="AutorLibro" ToRole="Libro" />
+  </EntityType>
+  <EntityType Name="Libro">
+    <Key>
+      <PropertyRef Name="IdLibro" />
+    </Key>
+    <Property Name="IdLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Titulo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaEdicion" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="AutorLibro" Relationship="Self.FK__AutoLib__Libro__7F2BE32F" FromRole="Libro" ToRole="AutorLibro" />
+  </EntityType>
+  <Association Name="FK__AutoLib__Autor__7F2BE32F">
+    <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+    <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autor">
+        <PropertyRef Name="IdAutor" />
+      </Principal>
+      <Dependent Role="AutorLibro">
+        <PropertyRef Name="IdAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__AutoLib__Libro__7F2BE32F">
+    <End Role="Libro" Type="Self.Libro" Multiplicity="1" />
+    <End Role="AutorLibro" Type="Self.AutorLibro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Libro">
+        <PropertyRef Name="IdLibro" />
+      </Principal>
+      <Dependent Role="AutorLibro">
+        <PropertyRef Name="IdLibro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibrosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Autor" EntityType="Self.Autor" />
+    <EntitySet Name="AutorLibro" EntityType="Self.AutorLibro" />
+    <EntitySet Name="Libro" EntityType="Self.Libro" />
+    <AssociationSet Name="FK__AutoLib__Autor__7F2BE32F" Association="Self.FK__AutoLib__Autor__7F2BE32F">
+      <End Role="Autor" EntitySet="Autor" />
+      <End Role="AutorLibro" EntitySet="AutorLibro" />
+    </AssociationSet>
+    <AssociationSet Name="FK__AutoLib__Libro__7F2BE32F" Association="Self.FK__AutoLib__Libro__7F2BE32F">
+      <End Role="Libro" EntitySet="Libro" />
+      <End Role="AutorLibro" EntitySet="AutorLibro" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
