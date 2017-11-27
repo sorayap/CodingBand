@@ -4,36 +4,73 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Listar Libros</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Nuevo Libro", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Titulo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaEdicion)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaEdicion)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdLibro }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdLibro }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdLibro })
-        </td>
-    </tr>
+@using (Html.BeginForm("Search", "Libro"))
+{
+<div class="col-md-offset-1 col-md-5">
+    <div class="form-group">
+        <label class="control-label col-md-2">Título</label>
+        <div class="col-md-10">
+            <input type="text" name="titulo" id="titulo" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Edición</label>
+        <div class="col-md-10">
+            <input type="date" name="edicion" />
+        </div>
+    </div>
+</div>
+<div class="col-md-offset-1 col-md-5">
+    <div class="form-group">
+        <label class="control-label col-md-2">Autor</label>
+        <div class="col-md-10">
+            <input type="text" name="autor" />
+        </div>
+        </div>
+    <div class="form-group">
+        <input type="submit" title="Delete" value="Buscar" />
+    </div>
+    </div>
 }
+    <table class="table">
+        <tr>
+            <th>
+                Título
+            </th>
+            <th>
+                Edición
+            </th>
+            <th>
+                Autores
+            </th>
+            <th></th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaEdicion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Autores)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdLibro }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdLibro }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdLibro })
+                </td>
+            </tr>
+        }
+
+    </table>

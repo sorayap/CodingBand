@@ -17,7 +17,15 @@ namespace Libros.Controllers
         // GET: /Libro/
         public ActionResult Index()
         {
-            return View(db.Libro.ToList());
+            List<Libro> libros = new List<Libro>();
+            libros = db.Libro.ToList();
+
+            foreach(Libro libro in libros)
+            {
+                libro.Autores = db.AutorLibro.Where(al => al.IdLibro == libro.IdLibro).Count();
+            }
+
+            return View(libros);
         }
 
         // GET: /Libro/Details/5
@@ -176,6 +184,23 @@ namespace Libros.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        
+        public ActionResult Search(string titulo, DateTime? edicion, string autor)
+        {
+            int numAutores = autor!=""? Convert.ToInt32(autor) : 0;
+            List<Libro> libros = new List<Libro>();
+
+
+            libros = db.Libro.Where(l => l.Titulo.Contains(titulo) || l.FechaEdicion == edicion || l.AutorLibro.Count() == numAutores).ToList();
+
+            foreach (Libro libro in libros)
+            {
+                libro.Autores = db.AutorLibro.Where(al => al.IdLibro == libro.IdLibro).Count();
+            }
+
+            return View("Index",libros);
         }
     }
 }

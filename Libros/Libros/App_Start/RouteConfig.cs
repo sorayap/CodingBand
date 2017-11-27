@@ -20,6 +20,12 @@ namespace Libros
             );
 
             routes.MapRoute(
+                name: "Search",
+                url: "Libro/Search",
+                defaults: new { controller = "Libro", action = "Search", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

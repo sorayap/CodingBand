@@ -22,6 +22,8 @@ namespace Libros.Models
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
         public System.DateTime FechaEdicion { get; set; }
+
+        public int Autores { get; set; }
     
         public virtual ICollection<AutorLibro> AutorLibro { get; set; }
     }
