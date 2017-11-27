@@ -11,6 +11,7 @@ namespace Libros.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Libro
     {
@@ -21,6 +22,8 @@ namespace Libros.Models
     
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
+
+        [DataType(DataType.Date)]
         public System.DateTime FechaEdicion { get; set; }
 
         public int Autores { get; set; }
